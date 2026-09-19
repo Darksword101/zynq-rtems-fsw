@@ -1,0 +1,6 @@
+build/
+*.exe
+*.map
+__pycache__/
+.pytest_cache/
+*.log

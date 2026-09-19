@@ -1,0 +1,22 @@
+{
+  "version": 4,
+  "configurations": [
+    {
+      "name": "RTEMS ARM (xilinx_zynq_a9_qemu)",
+      "compilerPath": "/home/arian_contreras/rtems/6/bin/arm-rtems6-gcc",
+      "compilerArgs": ["-qrtems", "-mcpu=cortex-a9", "-mthumb", "-mfpu=neon", "-mfloat-abi=hard", "-mtune=cortex-a9"],
+      "cStandard": "gnu11",
+      "intelliSenseMode": "linux-gcc-arm",
+      "includePath": [
+        "${workspaceFolder}/fsw",
+        "${workspaceFolder}/fsw/config",
+        "${workspaceFolder}/fsw/platform",
+        "${workspaceFolder}/fsw/services",
+        "${workspaceFolder}/fsw/apps",
+        "${workspaceFolder}/fsw/demos",
+        "/home/arian_contreras/rtems/6/arm-rtems6/xilinx_zynq_a9_qemu/lib/include"
+      ],
+      "defines": ["__rtems__"]
+    }
+  ]
+}

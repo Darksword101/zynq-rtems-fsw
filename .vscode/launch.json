@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [{
+    "name": "Attach QEMU (RTEMS ARM)",
+    "type": "cppdbg",
+    "request": "launch",
+    "program": "${workspaceFolder}/build/fsw.exe",
+    "cwd": "${workspaceFolder}",
+    "MIMode": "gdb",
+    "miDebuggerPath": "/home/arian_contreras/rtems/6/bin/arm-rtems6-gdb",
+    "miDebuggerServerAddress": "localhost:1234",
+    "stopAtEntry": false,
+    "setupCommands": [
+      { "text": "-enable-pretty-printing" },
+      { "text": "break bsp_fatal_extension" }
+    ]
+  }]
+}
