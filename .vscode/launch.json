@@ -9,8 +9,10 @@
     "MIMode": "gdb",
     "miDebuggerPath": "/home/arian_contreras/rtems/6/bin/arm-rtems6-gdb",
     "miDebuggerServerAddress": "localhost:1234",
+    "targetArchitecture": "arm",
     "stopAtEntry": false,
     "setupCommands": [
+      { "text": "add-auto-load-safe-path /home/arian_contreras/projects/zynq-rtems-fsw/build" },
       { "text": "-enable-pretty-printing" },
       { "text": "break bsp_fatal_extension" }
     ]
