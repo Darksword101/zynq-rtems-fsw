@@ -14,7 +14,7 @@ INCS    = -Ifsw -Ifsw/config -Ifsw/platform -Ifsw/services -Ifsw/apps -Ifsw/demo
 WARN    = -Wall -Wextra -Werror -Wshadow -Wundef -std=gnu11
 
 TGT_CFLAGS  = $(shell pkg-config --cflags $(PKG)) -O2 -g -ffunction-sections -fdata-sections $(WARN) $(INCS)
-TGT_LDFLAGS = $(shell pkg-config --libs $(PKG)) -Wl,--gc-sections -Wl,-Map=build/fsw.map
+TGT_LDFLAGS = $(shell pkg-config --libs $(PKG)) -Wl,--gc-sections -Wl,-Map=build/fsw.map -lm
 ifdef DEMO
 TGT_CFLAGS += -DFSW_RUN_PI_DEMO          # make DEMO=1 → runs pi_demo before starting apps
 endif
@@ -48,7 +48,7 @@ host-test: $(HOST_TESTS)
 
 build/host/%: tests/host/%.c $(PORTABLE_SRC)
 	@mkdir -p $(dir $@)
-	$(HOSTCC) $(HOST_CFLAGS) $^ -o $@
+	$(HOSTCC) $(HOST_CFLAGS) $^ -o $@ -lm
 
 run: build/fsw.exe
 	./scripts/run-qemu.sh $<
