@@ -22,6 +22,8 @@ rtems_status_code hk_init(void)
 void hk_lock(void) {rtems_semaphore_obtain(mutex, RTEMS_WAIT, RTEMS_NO_TIMEOUT); }
 void hk_unlock(void) {rtems_semaphore_release(mutex); }
 
+hk_table_t *hk_locked_table(void) { return &table; }
+
 void hk_snapshot(hk_table_t *out) {hk_lock(); *out = table; hk_unlock();}
 
 void hk_update_sensor(const sensor_sample_t * s)
