@@ -64,6 +64,7 @@ static rtems_task fdir_task(rtems_task_argument arg)
         hk_set_mode(st.mode, st.fault_flags);
     }
 }
+
 static void publish_event(const char *text) 
 {
     sb_publish(MSG_ID_EVENT, text, (uint16_t)(strlen(text) + 1)); printf("[EVT] %s\n", text); 
