@@ -1,5 +1,5 @@
-#ifndef MSG_ID_H
-#define MSG_ID_H
+#ifndef MSG_IDS_H
+#define MSG_IDS_H
 
 /* Software-bus message IDs */
 enum {

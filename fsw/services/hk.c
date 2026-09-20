@@ -2,6 +2,7 @@
 #include "hk.h"
 #include "fsw_config.h"
 #include "fsw_types.h"
+#include <string.h>
 
 static hk_table_t table;
 static rtems_id mutex;

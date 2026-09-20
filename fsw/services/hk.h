@@ -1,3 +1,6 @@
+#ifndef HK_H
+#define HK_H
+
 /* hk.h */
 #include <rtems.h>
 #include <stdbool.h>
@@ -16,3 +19,5 @@ void hk_set_mode(fsw_mode_t mode, uint8_t fault_flags);
 void hk_count_cmd(bool accepted);
 void hk_reset_counters(void);
 hk_table_t *hk_locked_table(void);                     /* only valid between hk_lock/hk_unlock */
+
+#endif

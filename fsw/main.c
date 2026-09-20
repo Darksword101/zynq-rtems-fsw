@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "fsw_config.h"
 #include "timebase.h"
+#include "pi_demo.h"
 
 /* unused until Day 2 app starts; -Werror=unused-function otherwise rejects it */
 static void __attribute__((unused)) fatal(const char *what, rtems_status_code sc)
@@ -21,6 +22,9 @@ rtems_task Init(rtems_task_argument arg)
            (unsigned long long)now_ns());
 
     /* Day 2: sb_init(); hk_init(); start apps here */
+    #ifdef FSW_RUN_PI_DEMO
+        pi_demo_run();
+    #endif
 
     printf("FSW READY\n");
     rtems_task_delete(RTEMS_SELF);             /* Init's job is done; apps carry on */
