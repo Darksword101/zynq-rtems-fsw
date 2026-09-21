@@ -3,6 +3,7 @@
 
 #include <rtems.h>
 
+void publish_event(const char *text);
 rtems_status_code fdir_app_start(void);
 
 #endif

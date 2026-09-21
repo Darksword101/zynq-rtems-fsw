@@ -9,4 +9,7 @@
 int uart_link_open(void);
 
 int uart_link_write(const void *buf, size_t len);
+
+int uart_link_read(void *buf, size_t max);
+
 #endif /* UART_LINK_H */    

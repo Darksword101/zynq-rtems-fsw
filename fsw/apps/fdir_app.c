@@ -7,7 +7,6 @@
 #include "fdir_app.h"
 
 static sb_pipe_t sensor_pipe, cmd_pipe;
-static void publish_event(const char *text);
 
 static rtems_task fdir_task(rtems_task_argument arg)
 {
@@ -66,7 +65,7 @@ static rtems_task fdir_task(rtems_task_argument arg)
     }
 }
 
-static void publish_event(const char *text) 
+void publish_event(const char *text) 
 {
     sb_publish(MSG_ID_EVENT, text, (uint16_t)(strlen(text) + 1)); printf("[EVT] %s\n", text); 
 }

@@ -6,6 +6,7 @@
 #include "fsw_config.h"
 #include "timebase.h"
 #include "pi_demo.h"
+#include "cmd_app.h"
 #include "sensor_app.h"
 #include "fdir_app.h"
 #include "tlm_app.h"
@@ -35,6 +36,7 @@ rtems_task Init(rtems_task_argument arg)
         pi_demo_run();
     #endif
     if (uart_link_open() != 0) fatal("uart_link_open", RTEMS_IO_ERROR);
+    if ((sc = cmd_app_start())    != RTEMS_SUCCESSFUL) fatal("cmd_app_start", sc);
     if ((sc = sensor_app_start()) != RTEMS_SUCCESSFUL) fatal("sensor_app_start", sc);
     if ((sc = fdir_app_start())   != RTEMS_SUCCESSFUL) fatal("fdir_app_start", sc);
     if ((sc = tlm_app_start())    != RTEMS_SUCCESSFUL) fatal("tlm_app_start", sc);
