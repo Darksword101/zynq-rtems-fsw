@@ -4,6 +4,7 @@
 #include "fdir_rules.h"
 #include "sensor_app.h"  /*sensor_period_id()*/
 #include "msg_ids.h"
+#include "fdir_app.h"
 
 static sb_pipe_t sensor_pipe, cmd_pipe;
 static void publish_event(const char *text);
@@ -68,4 +69,54 @@ static rtems_task fdir_task(rtems_task_argument arg)
 static void publish_event(const char *text) 
 {
     sb_publish(MSG_ID_EVENT, text, (uint16_t)(strlen(text) + 1)); printf("[EVT] %s\n", text); 
+}
+
+rtems_status_code fdir_app_start(void)
+{
+    rtems_status_code sc;
+    rtems_id tid;
+    sc = sb_create_pipe("FSEN", 16, &sensor_pipe);
+    if (sc != RTEMS_SUCCESSFUL) {
+        return sc;
+    }
+
+    sc = sb_subscribe(MSG_ID_SENSOR_DATA, &sensor_pipe);
+    if ( sc != RTEMS_SUCCESSFUL) {
+        return sc;
+    }
+
+    sc = sb_create_pipe("FCMD", 4, &cmd_pipe);
+    if(sc != RTEMS_SUCCESSFUL){
+        return sc;
+    }
+
+    sc = sb_subscribe(MSG_ID_CMD_SET_TEMP_LIM, &cmd_pipe);
+    if (sc != RTEMS_SUCCESSFUL) {
+        return sc;
+    }
+
+    sc = sb_subscribe(MSG_ID_CMD_ENTER_SAFE, &cmd_pipe);
+    if (sc != RTEMS_SUCCESSFUL) {
+        return sc;
+    }
+
+    sc = sb_subscribe(MSG_ID_CMD_EXIT_SAFE, &cmd_pipe);
+    if (sc != RTEMS_SUCCESSFUL) {
+        return sc;
+    }
+
+    sc = rtems_task_create(
+        rtems_build_name('F', 'D', 'I', 'R'),
+        PRIO_FDIR,
+        STACK_APP,
+        RTEMS_DEFAULT_MODES,
+        RTEMS_FLOATING_POINT,
+        &tid);
+
+    if (sc != RTEMS_SUCCESSFUL) {
+        return sc;
+    }
+
+    return rtems_task_start(tid, fdir_task, 0);
+
 }

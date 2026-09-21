@@ -7,6 +7,9 @@
 #include "timebase.h"
 #include "pi_demo.h"
 #include "sensor_app.h"
+#include "fdir_app.h"
+#include "tlm_app.h"
+#include "uart_link.h"
 
 /* unused until Day 2 app starts; -Werror=unused-function otherwise rejects it */
 static void __attribute__((unused)) fatal(const char *what, rtems_status_code sc)
@@ -31,7 +34,10 @@ rtems_task Init(rtems_task_argument arg)
     #ifdef FSW_RUN_PI_DEMO
         pi_demo_run();
     #endif
+    if (uart_link_open() != 0) fatal("uart_link_open", RTEMS_IO_ERROR);
     if ((sc = sensor_app_start()) != RTEMS_SUCCESSFUL) fatal("sensor_app_start", sc);
+    if ((sc = fdir_app_start())   != RTEMS_SUCCESSFUL) fatal("fdir_app_start", sc);
+    if ((sc = tlm_app_start())    != RTEMS_SUCCESSFUL) fatal("tlm_app_start", sc);
     printf("FSW READY\n");
     rtems_task_delete(RTEMS_SELF);             /* Init's job is done; apps carry on */
 }

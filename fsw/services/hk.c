@@ -36,4 +36,31 @@ void hk_update_sensor(const sensor_sample_t * s)
     hk_unlock();
 
 }
-/* hk_set_mode, hk_count_cmd, hk_reset_counters: same lock/modify/unlock shape*/
+
+void hk_set_mode(fsw_mode_t mode, uint8_t fault_flags)
+{
+    hk_lock();
+    table.tlm.mode = (uint8_t)mode;
+    table.tlm.fault_flags = fault_flags;
+    hk_unlock();
+}
+
+void hk_count_cmd(bool accepted)
+{
+    hk_lock();
+    if (accepted) table.tlm.cmd_accept_count++;
+    else          table.tlm.cmd_reject_count++;
+    hk_unlock();
+}
+
+void hk_reset_counters(void)
+{
+    hk_lock();
+    table.tlm.cmd_accept_count = 0;
+    table.tlm.cmd_reject_count = 0;
+    table.tlm.sensor_missed_deadlines = 0;
+    table.tlm.sensor_sample_count = 0;
+    table.tlm.sb_drop_count = 0;
+    table.tlm.sensor_max_wall_us = 0;
+    hk_unlock();
+}
