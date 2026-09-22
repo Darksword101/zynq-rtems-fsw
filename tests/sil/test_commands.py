@@ -15,3 +15,4 @@ def test_set_tlm_period(fsw):
     link.send(P.cmd_set_tlm_period(250))
     assert any(link.next_hk()["tlm_period_ms"] == 250 for _ in range(3))
     link.send(P.cmd_set_tlm_period(1000))
+    assert any(link.next_hk()["tlm_period_ms"] == 1000 for _ in range(3))

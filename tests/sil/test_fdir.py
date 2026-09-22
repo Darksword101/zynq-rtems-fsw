@@ -1,6 +1,7 @@
 from gs import packets as P
 def test_fault_injection_enters_safe_and_recovers(fsw):
     link, _ = fsw
+    assert link.next_hk()["mode"] == 1, "startup HK not observed before fault injection"
     link.send(P.cmd_inject_fault(50.0))
     assert any(link.next_hk()["mode"] == 2 for _ in range(4)), "did not enter SAFE"
     link.send(P.cmd_exit_safe())
