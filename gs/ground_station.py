@@ -24,6 +24,6 @@ def main():
                   f"faults=0x{h['fault_flags']:02x} temp={h['temp_c']:6.2f}C acc={h['cmd_accept']} rej={h['cmd_reject']} "
                   f"missed={h['sensor_missed']} drops={h['sb_drops']} maxwall={h['sensor_max_wall_us']}us")
 
-        elif p.apid == P.APID.EVENT:
+        elif p.apid == P.APID_EVENT:
             print(f"[EVT #{p.seq:5d}] {p.event()}")
 if __name__ == "__main__": main()

@@ -4,11 +4,11 @@ from .packets import ASM, parse_packet, packet_length_from_header, Packet
 class GroundLink:
     def __init__(self, host="127.0.0.1", port=5555, timeout=5.0):
         self.sock = socket.create_connection((host, port), timeout=timeout)
-        self.buf = "b"
+        self.buf = b""
 
 
     @classmethod
-    def connnect_retry(cls, port, attempts=50, delay=0.2):
+    def connect_retry(cls, port, attempts=50, delay=0.2):
         for _ in range(attempts):
             try:
                 return cls(port=port)
@@ -38,4 +38,4 @@ class GroundLink:
     def next_hk(self, timeout=5.0) -> dict:
         while True:
             p = self.next_packet(timeout)
-            if p.apid = 0x001: return p.hk()
+            if p.apid == 0x001: return p.hk()
