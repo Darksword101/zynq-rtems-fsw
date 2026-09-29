@@ -33,3 +33,32 @@ size_t ccsds_build_frame(uint8_t *buf, size_t cap, uint16_t apid, uint16_t seq, 
     put_be16(p + 14 + payload_len, crc16_ccitt(p, pkt_len - CCSDS_CRC_LEN, 0xFFFF));
     return CCSDS_ASM_LEN + pkt_len;
 }
+
+static uint16_t get_be16(const uint8_t *p) { return (uint16_t)((p[0] << 8) | p[1]); }
+static uint64_t get_le64(const uint8_t *p)
+{
+    uint64_t v = 0;
+    for (int i = 0; i < 8; i++) v |= (uint64_t)p[i] << (8 * i);
+    return v;
+}
+
+int ccsds_parse_packet(const uint8_t *pkt, size_t len, ccsds_pkt_t *out)
+{
+    const size_t min_len = CCSDS_PRI_HDR_LEN + CCSDS_SEC_HDR_LEN + CCSDS_CRC_LEN;
+    if (len < min_len) return -1;
+
+    /* CCSDS length field is (bytes after primary header) - 1 */
+    size_t pkt_len = (size_t)get_be16(pkt + 4) + 1 + CCSDS_PRI_HDR_LEN;
+    if (pkt_len < min_len || pkt_len > len) return -1;
+
+    uint16_t crc_rx = get_be16(pkt + pkt_len - CCSDS_CRC_LEN);
+    uint16_t crc_calc = crc16_ccitt(pkt, pkt_len - CCSDS_CRC_LEN, 0xFFFF);
+    if (crc_rx != crc_calc) return -2;
+
+    out->apid        = get_be16(pkt + 0) & 0x7FF;
+    out->seq         = get_be16(pkt + 2) & 0x3FFF;
+    out->time_ns     = get_le64(pkt + 6);
+    out->payload     = pkt + CCSDS_PRI_HDR_LEN + CCSDS_SEC_HDR_LEN;
+    out->payload_len = (uint16_t)(pkt_len - min_len);
+    return 0;
+}
