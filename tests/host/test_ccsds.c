@@ -7,7 +7,7 @@
 int main(void)
 {
     static const uint8_t payload[] = {0x10, 0x20, 0x30, 0x40};
-    uint8_t frame[CCSDS_MAX_FRAME_LEN];
+    uint8_t frame[CCSDS_MAX_FRAME];
     ccsds_pkt_t packet;
     const uint16_t apid = 0x321;
     const uint16_t seq = 0x1234;
