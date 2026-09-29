@@ -1,0 +1,23 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  host-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: make host-test
+
+  target-sil:
+    runs-on: ubuntu-latest
+    container: ghcr.io/darksword101/zynq-rtems-toolchain:6.1
+    steps:
+      - uses: actions/checkout@v4
+      - run: make target RTEMS_PREFIX=/opt/rtems/6
+      - run: python3 -m pytest tests/sil -v --timeout=120
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fsw-artifacts
+          path: |
+            build/fsw.exe
+            build/fsw.map
